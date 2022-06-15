@@ -1,0 +1,50 @@
+import dynamic from 'next/dynamic';
+import { useState } from 'react'
+import styles from '../styles/Home.module.css'
+
+// Dynamic import for chart module to fix window-undefined, according to:
+// https://github.com/apexcharts/vue-apexcharts/issues/307
+const ApexCharts = dynamic(() => import('react-apexcharts'), { ssr: false });
+
+
+/**
+ * Coffee diagram component.
+ * 
+ * @param {*} props - all coffee data to display.
+ * @returns 
+ */
+export default function EnvironmentDiagram({ ...data }) {
+  // Set base options with countries for diagram.
+  const [options, setOptions] = useState({
+    chart: {
+      id: 'home-environment',
+      type: 'Line'
+    },
+    markers: {
+      size: 1
+    },
+    xaxis: {
+      categories: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23']
+    }
+  })
+
+  const [selection, setSelection] = useState({
+    series : [{
+      color: '#2dd37b',
+      name: 'Temperature',
+      data: [28.3, 27.6, 27.2, 26.9, 25.4, 25.5, 26.5, 28.3, 27.6, 27.2, 26.9, 25.4, 25.5, 26.5, 28.3, 27.6, 27.2, 26.9, 25.4, 25.5, 26.5, 28.3, 27.6, 27.2]
+    }
+  ]})
+
+  return (
+    <>
+      <p>{data.message}</p>
+      <ApexCharts
+        options={options}
+        series={selection.series}
+        width={800}
+        height={620}
+      />    
+    </>
+  )
+}

@@ -1,0 +1,52 @@
+.form {
+  max-width: 800px;
+  display: block;
+  clear: both;
+}
+
+.form fieldset {
+  border: 1px solid;
+  padding: 15px;
+}
+
+.header {
+  font-style: italic;
+  font-weight: 500;
+}
+
+.form label {
+  display: flex;
+  justify-content: center;
+  justify-content: space-between;
+  margin: 5px;
+  clear: both;
+}
+
+.form input {
+  text-align: right;
+  width: 50%;
+}
+
+.form button {
+  padding: 10px;
+  /* margin: 2px; */
+  margin-top: 5px;
+  margin-bottom: 5px;
+  /* float: right; */
+  width: 100%;
+  background-color: #F8BF10;
+  border: 1px solid #1D3557;
+  font-size: 1rem;
+}
+
+.form button:hover {
+  cursor: pointer;
+  background-color: #FCEFB4;
+}
+
+.errorMessage {
+  font-size: 1rem;
+  font-weight: 700;
+  float: right;
+  color: #B30E1C;
+}
