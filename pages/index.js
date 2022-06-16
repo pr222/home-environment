@@ -1,28 +1,8 @@
 import Head from 'next/head'
-import router from 'next/router'
-import { useState } from 'react'
-import moment from 'Moment'
-import EnvironmentDiagram from '../components/EnvironmentDiagram'
+import HomeEnvironment from '../components/HomeEnvironment'
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
-
-  const [greeting, setGreeting] = useState('Hello')
-  const [date, setDate] = useState(moment()) // default to "now"
-  const [formDate, setFormDate] = useState(date.format().split('T')[0]) // make form-friendly format with the default date
-
-  // moment.format()
-
-  console.log(date.calendar())
-  console.log(formDate)
-
-  const handleDateChange = event => {
-    console.log(event.target.value)
-    setFormDate(event.target.value)
-
-    setDate(moment(event.target.value))
-  }
-
   return (
     <div className={styles.container}>
       <Head>
@@ -36,15 +16,7 @@ export default function Home() {
           A Home Environment
         </h1>
 
-        <form>
-          <label htmlFor="formDate">Select a date </label>
-          <input type="date" id="formDate" name="formDate" value={formDate} onChange={handleDateChange}></input>
-        </form>
-
-        <p>Display data for {date.calendar()}</p>
-
-        <EnvironmentDiagram message={greeting} />
-
+        <HomeEnvironment />
       </main>
 
       <footer className={styles.footer}>

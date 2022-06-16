@@ -8,10 +8,10 @@ const ApexCharts = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 
 /**
- * Coffee diagram component.
+ * Diagram component.
  * 
- * @param {*} props - all coffee data to display.
- * @returns 
+ * @param {*} data - data to display.
+ * @returns this component.
  */
 export default function EnvironmentDiagram({ ...data }) {
   // Set base options with countries for diagram.
@@ -38,7 +38,7 @@ export default function EnvironmentDiagram({ ...data }) {
 
   return (
     <>
-      <p>{data.message}</p>
+      <p>{data.temperature}</p>
       <ApexCharts
         options={options}
         series={selection.series}
