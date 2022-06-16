@@ -20,7 +20,7 @@ export default function EnvironmentDiagram({ ...data }) {
       type: 'Line'
     },
     markers: {
-      size: 1
+      size: 5
     },
     xaxis: {
       categories: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23']
@@ -32,6 +32,10 @@ export default function EnvironmentDiagram({ ...data }) {
       color: '#2dd37b',
       name: 'Temperature',
       data: data.temperature
+    }, {
+      color: '#1cb7cc',
+      name: 'Humidity',
+      data: data.humidity       
     }
   ]})
 
@@ -41,9 +45,13 @@ export default function EnvironmentDiagram({ ...data }) {
         color: '#2dd37b',
         name: 'Temperature',
         data: data.temperature
+      }, {
+        color: '#1cb7cc',
+        name: 'Humidity',
+        data: data.humidity       
       }
     ]})
-  }, [data.temperature])
+  }, [data.temperature, data.humidity])
 
   return (
     <>

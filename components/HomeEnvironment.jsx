@@ -9,6 +9,7 @@ import EnvironmentDiagram from './EnvironmentDiagram'
  */
 export default function HomeEnvironment() {
   const [temperature, setTemperature] = useState([])
+  const [humidity, setHumidity] = useState([])
 
   const [displayDate, setDisplayDate] = useState(moment()) // Default to "now"
   const [formDate, setFormDate] = useState(displayDate.format().split('T')[0]) // Make form-friendly format with the default display date.
@@ -28,6 +29,9 @@ export default function HomeEnvironment() {
       .then((data) => {
         const temps = data.temperature.map(val => Number(val))
         setTemperature(temps)
+
+        const humid = data.humidity.map(val => Number(val))
+        setHumidity(humid)
         setIsLoading(false)
       })
   }, [formDate])
@@ -47,7 +51,7 @@ export default function HomeEnvironment() {
 
      <p>{isLoading ? 'Loading...' : `Displaying data for: ${displayDate.calendar()}`}</p>
 
-      <EnvironmentDiagram temperature={temperature} /> 
+      <EnvironmentDiagram temperature={temperature} humidity={humidity} /> 
     </>
   )
 }

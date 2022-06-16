@@ -1,5 +1,8 @@
 import moment from 'Moment'
 
+// Temperature: Returns temperature in celcius (C)
+// Humidity: Returns relative humidity (rH) in percentage %
+
 /**
  * Get environment readings from the Arduino Cloud API.
  * Should return one reading per hour for the queried date (YYYY-MM-DD).
@@ -10,8 +13,49 @@ import moment from 'Moment'
  */
 export default async function handler(req, res) {
   console.log(req.query.date)
+
+  const accessToken = await getAccessToken()
+
+  if(!accessToken) {
+    return res.status(500).json({ message: 'Could not establish connection.'})
+  }
+
+  const queryString = getQueryString(req.query.date)
+
+  const temperature = await getSensorReadings(accessToken, `${process.env.TEMPERATURE_ID}`, queryString)
+  const humidity = await getSensorReadings(accessToken, `${process.env.HUMIDITY_ID}`, queryString)
+  
+  // Cleanup data to return to the client.
+  const temp = []
+
+  temperature.forEach(element => {
+    temp.push(element.value.toFixed(2))
+  });
+
+  const humid = []
+
+  humidity.forEach(element => {
+    humid.push(Math.round(Number(element.value)))
+  })
+
+  const data = {
+    temperature: temp,
+    humidity: humid
+  }
+
+  res.status(200).json(data)
+}
+
+/**
+ * Build query string for the queried parameter,
+ * with a interval of once per hour.
+ * 
+ * @param {string} date - date as "YYYY-MM-DD"
+ * @returns 
+ */
+function getQueryString(date) {
   // Set the right dates
-  let startDate = moment(req.query.date)
+  let startDate = moment(date)
   let endDate = startDate.clone().add(1, 'days')
 
   // Format dates
@@ -20,32 +64,9 @@ export default async function handler(req, res) {
 
   let interval = 3600 // 1 hour in seconds
 
-  const accessToken = await getAccessToken()
+  const query = `desc=false&from=${startDate}T00:00:00Z&interval=${interval}&to=${endDate}T00:00:00Z`
 
-  if(!accessToken) {
-    return res.status(500).json({ message: 'Could not establish connection.'})
-  }
-
-  const fetchString = `${process.env.THING_PROPERTIES}/timeseries?desc=false&from=${startDate}T00:00:00Z&interval=${interval}&to=${endDate}T00:00:00Z`
-
-  // Request for environment readings, THING PROPERTIES currently temperature per second-reading
-  const request = await fetch(fetchString, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${accessToken}`
-    }  
-  })
-
-  const response = await request.json()
-
-  // Cleanup data to return to the client.
-  const temp = []
-
-  response.data.forEach(element => {
-    temp.push(element.value.toFixed(2))
-  });
-
-  res.status(200).json({ temperature: temp })
+  return query
 }
 
 /**
@@ -68,4 +89,27 @@ async function getAccessToken() {
   const response = await request.json()
 
   return response.access_token
+}
+
+/**
+ * Get sensor readings from the Arduino Cloud using its API.
+ * 
+ * @param {string} accessToken - JWT token
+ * @param {string} propertyID - the thing property ID
+ * @param {string} queries - queries string
+ * @returns 
+ */
+async function getSensorReadings(accessToken, propertyID, queries) {
+  const fetchString = `${process.env.THING_PROPERTIES_URL}/${propertyID}/timeseries?${queries}`
+
+  const request = await fetch(fetchString, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }  
+  })
+
+  const response = await request.json()
+
+  return response.data
 }
