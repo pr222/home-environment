@@ -14,6 +14,8 @@ const ApexCharts = dynamic(() => import('react-apexcharts'), { ssr: false });
  * @returns this component.
  */
 export default function EnvironmentDiagram({ ...data }) {
+  const temps = data.temperatures.map(val => Number(val))
+
   // Set base options with countries for diagram.
   const [options, setOptions] = useState({
     chart: {
@@ -32,13 +34,13 @@ export default function EnvironmentDiagram({ ...data }) {
     series : [{
       color: '#2dd37b',
       name: 'Temperature',
-      data: [28.3, 27.6, 27.2, 26.9, 25.4, 25.5, 26.5, 28.3, 27.6, 27.2, 26.9, 25.4, 25.5, 26.5, 28.3, 27.6, 27.2, 26.9, 25.4, 25.5, 26.5, 28.3, 27.6, 27.2]
+    data: temps
     }
   ]})
 
   return (
     <>
-      <p>{data.temperature}</p>
+      <p>{data.temperatures}</p>
       <ApexCharts
         options={options}
         series={selection.series}

@@ -8,7 +8,7 @@ import EnvironmentDiagram from './EnvironmentDiagram'
  * @returns this component.
  */
 export default function HomeEnvironment() {
-  const [temperature, setTemperature] = useState()
+  const [temperatures, setTemperatures] = useState([])
 
   const [date, setDate] = useState(moment()) // default to "now"
   const [formDate, setFormDate] = useState(date.format().split('T')[0]) // make form-friendly format with the default date
@@ -21,10 +21,11 @@ export default function HomeEnvironment() {
   }
 
   useEffect (() => {
-    fetch(`api/hello?date=${formDate}`)
+    // fetch(`api/hello?date=${formDate}`)
+    fetch(`api/readings/home-environment`)
       .then((res) => res.json())
       .then((data) => {
-        setTemperature(data.name)
+        setTemperatures(data.temperatures)
       })
   }, [formDate])
 
@@ -43,7 +44,7 @@ export default function HomeEnvironment() {
 
       <p>Display data for: {date.calendar()}</p>
 
-      <EnvironmentDiagram temperature={temperature} /> 
+      <EnvironmentDiagram temperatures={temperatures} /> 
     </>
   )
 }
