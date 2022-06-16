@@ -37,17 +37,15 @@ export default async function handler(req, res) {
   })
 
   const response = await request.json()
-  // console.log(response)
 
+  // Cleanup data to return to the client.
   const temp = []
 
   response.data.forEach(element => {
     temp.push(element.value.toFixed(2))
   });
 
-  // console.log(temp)
-
-  res.status(200).json({ temperatures: temp })
+  res.status(200).json({ temperature: temp })
 }
 
 /**

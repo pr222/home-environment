@@ -31,7 +31,7 @@ export default function EnvironmentDiagram({ ...data }) {
     series : [{
       color: '#2dd37b',
       name: 'Temperature',
-      data: data.temperatures
+      data: data.temperature
     }
   ]})
 
@@ -40,10 +40,10 @@ export default function EnvironmentDiagram({ ...data }) {
       series : [{
         color: '#2dd37b',
         name: 'Temperature',
-        data: data.temperatures
+        data: data.temperature
       }
     ]})
-  }, [data.temperatures])
+  }, [data.temperature])
 
   return (
     <>
