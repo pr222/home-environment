@@ -1,3 +1,5 @@
+import moment from 'Moment'
+
 /**
  * Get environment readings from the Arduino Cloud API.
  * Should return one reading per hour for the queried date (YYYY-MM-DD).
@@ -8,6 +10,15 @@
  */
 export default async function handler(req, res) {
   console.log(req.query.date)
+  // Set the right dates
+  let startDate = moment(req.query.date)
+  let endDate = startDate.clone().add(1, 'days')
+
+  // Format dates
+  startDate = startDate.format().split('T')[0]
+  endDate = endDate.format().split('T')[0]
+
+  let interval = 3600 // 1 hour in seconds
 
   const accessToken = await getAccessToken()
 
@@ -15,8 +26,10 @@ export default async function handler(req, res) {
     return res.status(500).json({ message: 'Could not establish connection.'})
   }
 
+  const fetchString = `${process.env.THING_PROPERTIES}/timeseries?desc=false&from=${startDate}T00:00:00Z&interval=${interval}&to=${endDate}T00:00:00Z`
+
   // Request for environment readings, THING PROPERTIES currently temperature per second-reading
-  const request = await fetch(`${process.env.THING_PROPERTIES}/timeseries?desc=false&from=2022-06-14T00:00:00Z&interval=3600&to=2022-06-15T00:00:00Z`, {
+  const request = await fetch(fetchString, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${accessToken}`
@@ -24,7 +37,7 @@ export default async function handler(req, res) {
   })
 
   const response = await request.json()
-  console.log(response)
+  // console.log(response)
 
   const temp = []
 
@@ -32,7 +45,7 @@ export default async function handler(req, res) {
     temp.push(element.value.toFixed(2))
   });
 
-  console.log(temp)
+  // console.log(temp)
 
   res.status(200).json({ temperatures: temp })
 }

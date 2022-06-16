@@ -1,11 +1,10 @@
 import dynamic from 'next/dynamic';
-import { useState } from 'react'
-import styles from '../styles/Home.module.css'
+import { useState, useEffect } from 'react'
+// import styles from '../styles/Home.module.css'
 
 // Dynamic import for chart module to fix window-undefined, according to:
 // https://github.com/apexcharts/vue-apexcharts/issues/307
 const ApexCharts = dynamic(() => import('react-apexcharts'), { ssr: false });
-
 
 /**
  * Diagram component.
@@ -14,8 +13,6 @@ const ApexCharts = dynamic(() => import('react-apexcharts'), { ssr: false });
  * @returns this component.
  */
 export default function EnvironmentDiagram({ ...data }) {
-  const temps = data.temperatures.map(val => Number(val))
-
   // Set base options with countries for diagram.
   const [options, setOptions] = useState({
     chart: {
@@ -34,13 +31,22 @@ export default function EnvironmentDiagram({ ...data }) {
     series : [{
       color: '#2dd37b',
       name: 'Temperature',
-    data: temps
+      data: data.temperatures
     }
   ]})
 
+  useEffect(() => {
+    setSelection({
+      series : [{
+        color: '#2dd37b',
+        name: 'Temperature',
+        data: data.temperatures
+      }
+    ]})
+  }, [data.temperatures])
+
   return (
     <>
-      <p>{data.temperatures}</p>
       <ApexCharts
         options={options}
         series={selection.series}
