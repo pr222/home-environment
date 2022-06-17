@@ -10,6 +10,7 @@ import EnvironmentDiagram from './EnvironmentDiagram'
 export default function HomeEnvironment() {
   const [temperature, setTemperature] = useState([])
   const [humidity, setHumidity] = useState([])
+  const [weatherTemperature, setWeatherTemperature] = useState([])
 
   const [displayDate, setDisplayDate] = useState(moment()) // Default to "now"
   const [formDate, setFormDate] = useState(displayDate.format().split('T')[0]) // Make form-friendly format with the default display date.
@@ -35,7 +36,7 @@ export default function HomeEnvironment() {
         if (hour == i) { // intentionally not using === to accept both string and int values
           found = true
           cordinate.x = hour
-          cordinate.y = elem.value.toFixed(2)
+          cordinate.y = Number(elem.value).toFixed(2)
         }
       }
 
@@ -66,13 +67,16 @@ export default function HomeEnvironment() {
         const h = cleanup(humid)
         setHumidity(h)
 
-        setIsLoading(false)
-      })
-
-      fetch(`api/weather/${formDate}`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data)
+        fetch(`api/weather/${formDate}`)
+        .then((res) => res.json())
+        .then((data) => {
+          const weather = data.temperature
+          console.log(weather)
+          const w = cleanup(weather)
+          console.log(w)
+          setWeatherTemperature(w)
+          setIsLoading(false)
+        })
       })
   }, [formDate])
 
@@ -91,7 +95,7 @@ export default function HomeEnvironment() {
 
      <p>{isLoading ? 'Loading...' : `Displaying data for: ${displayDate.calendar()}`}</p>
 
-      <EnvironmentDiagram temperature={temperature} humidity={humidity} /> 
+      <EnvironmentDiagram temperature={temperature} humidity={humidity} weatherTemperature={weatherTemperature}/> 
     </>
   )
 }

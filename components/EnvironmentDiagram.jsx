@@ -37,9 +37,13 @@ export default function EnvironmentDiagram({ ...data }) {
         color: '#1cb7cc',
         name: 'Humidity',
         data:  data.humidity
+      }, {
+        color: '#000000',
+        name: 'Weather Temperature',
+        data:  data.weatherTemperature
       }
     ]})
-  }, [data.temperature, data.humidity])
+  }, [data.temperature, data.humidity, data.weatherTemperature])
 
   return (
     <>
