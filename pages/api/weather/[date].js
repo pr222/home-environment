@@ -3,34 +3,48 @@ import moment from "Moment"
 export default async function handler(req, res) {
   const { date } = req.query
 
-  const request = await fetch(`${process.env.WEATHER_API_LINK}`, {
+  const temperatureRequest = await fetch(`${process.env.WEATHER_API_LINK_TEMPERATURE}`, {
     method: 'GET'
   })
-
-  const response = await request.json()
-  console.log(response)
-  console.log(date)
-  const time = `${date}T00:00:00`
-  const tajm = Math.floor(new Date(time).getTime()/1000.0) 
-  console.log(moment(tajm).unix())
-  console.log(moment(tajm).format('x'))
+  const temperatureResponse = await temperatureRequest.json()
+  const temperature = filterData(temperatureResponse.value, date)
 
 
-  const one = moment(response.value[2].date).format()
-  console.log(one, 'TWEO?')
+  const humidityRequest = await fetch(`${process.env.WEATHER_API_LINK_HUMIDITY}`, {
+    method: 'GET'
+  })
+  const humidityResponse = await humidityRequest.json()
+  console.log(humidityResponse)
+  const humidity = filterData(humidityResponse.value, date)
+  console.log(humidity)
+  const weather = {
+    temperature: temperature,
+    humidity: humidity
+  }
+
+  res.status(200).json({ weather })
+}
+
+/**
+ * Filter out data for records of one day.
+ * 
+ * @param {object} data - Array of objects which hold the properies date and value.
+ * @param {string} day - date formatted "YYYY-MM-DD" 
+ * @returns array of filtered results
+ */
+function filterData(data, day) {
   const results = []
 
-  for (let m of response.value) {
-    if (moment(m.date).format().split('T')[0] === date) {
+  for (let record of data) {
+    if (moment(record.date).format().split('T')[0] === day) {
       const temp = {
-        time: moment(m.date).format(),
-        value: m.value
+        time: moment(record.date).format(),
+        value: record.value
       }
 
       results.push(temp)
     }
   }
-  console.log(results)
 
-  res.status(200).json({ temperature: results })
+  return results
 }

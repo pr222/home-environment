@@ -11,6 +11,7 @@ export default function HomeEnvironment() {
   const [temperature, setTemperature] = useState([])
   const [humidity, setHumidity] = useState([])
   const [weatherTemperature, setWeatherTemperature] = useState([])
+  const [weatherHumidity, setWeatherHumidity] = useState([])
 
   const [displayDate, setDisplayDate] = useState(moment()) // Default to "now"
   const [formDate, setFormDate] = useState(displayDate.format().split('T')[0]) // Make form-friendly format with the default display date.
@@ -70,11 +71,16 @@ export default function HomeEnvironment() {
         fetch(`api/weather/${formDate}`)
         .then((res) => res.json())
         .then((data) => {
-          const weather = data.temperature
-          console.log(weather)
-          const w = cleanup(weather)
-          console.log(w)
-          setWeatherTemperature(w)
+          console.log(data)
+          const weatherT = data.weather.temperature
+          console.log(weatherT)
+          const wTemperature = cleanup(weatherT)
+          console.log(wTemperature)
+          setWeatherTemperature(wTemperature)
+
+          const weatherH = data.weather.humidity
+          const wHumidity = cleanup(weatherH)
+          setWeatherHumidity(wHumidity)
           setIsLoading(false)
         })
       })
@@ -95,7 +101,7 @@ export default function HomeEnvironment() {
 
      <p>{isLoading ? 'Loading...' : `Displaying data for: ${displayDate.calendar()}`}</p>
 
-      <EnvironmentDiagram temperature={temperature} humidity={humidity} weatherTemperature={weatherTemperature}/> 
+      <EnvironmentDiagram temperature={temperature} humidity={humidity} weatherTemperature={weatherTemperature} weatherHumidity={weatherHumidity} /> 
     </>
   )
 }
