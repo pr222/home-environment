@@ -25,26 +25,32 @@ export default async function handler(req, res) {
   const temperature = await getSensorReadings(accessToken, `${process.env.TEMPERATURE_ID}`, queryString)
   const humidity = await getSensorReadings(accessToken, `${process.env.HUMIDITY_ID}`, queryString)
   
+
+  // const formatted = formatReadings(temperature)
+
+  // console.log(temperature)
+  // console.log(humidity)
   // Cleanup data to return to the client.
-  const temp = []
-
-  temperature.forEach(element => {
-    temp.push(element.value.toFixed(2))
-  });
-
-  const humid = []
-
-  humidity.forEach(element => {
-    humid.push(Math.round(Number(element.value)))
-  })
-
   const data = {
-    temperature: temp,
-    humidity: humid
+    thing: 'Home-Environment',
+    properties: {
+      temperature: temperature,
+      humidity: humidity      
+    }
   }
 
   res.status(200).json(data)
 }
+
+// function formatReadings(readings) {
+//   const original = readings
+
+//   for (let i = 0; i < 24; i++) {
+//     const element = array[i];
+    
+//   }
+
+// }
 
 /**
  * Build query string for the queried parameter,

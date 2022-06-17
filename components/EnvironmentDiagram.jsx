@@ -13,7 +13,7 @@ const ApexCharts = dynamic(() => import('react-apexcharts'), { ssr: false });
  * @returns this component.
  */
 export default function EnvironmentDiagram({ ...data }) {
-  // Set base options with countries for diagram.
+  const [selection, setSelection] = useState({})
   const [options, setOptions] = useState({
     chart: {
       id: 'home-environment',
@@ -27,18 +27,6 @@ export default function EnvironmentDiagram({ ...data }) {
     }
   })
 
-  const [selection, setSelection] = useState({
-    series : [{
-      color: '#2dd37b',
-      name: 'Temperature',
-      data: data.temperature
-    }, {
-      color: '#1cb7cc',
-      name: 'Humidity',
-      data: data.humidity       
-    }
-  ]})
-
   useEffect(() => {
     setSelection({
       series : [{
@@ -48,7 +36,7 @@ export default function EnvironmentDiagram({ ...data }) {
       }, {
         color: '#1cb7cc',
         name: 'Humidity',
-        data: data.humidity       
+        data:  data.humidity
       }
     ]})
   }, [data.temperature, data.humidity])
