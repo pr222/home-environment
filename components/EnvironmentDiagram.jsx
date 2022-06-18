@@ -1,6 +1,5 @@
 import dynamic from 'next/dynamic';
 import { useState, useEffect } from 'react'
-// import styles from '../styles/Home.module.css'
 
 // Dynamic import for chart module to fix window-undefined, according to:
 // https://github.com/apexcharts/vue-apexcharts/issues/307
@@ -14,7 +13,7 @@ const ApexCharts = dynamic(() => import('react-apexcharts'), { ssr: false });
  */
 export default function EnvironmentDiagram({ ...data }) {
   const [selection, setSelection] = useState({})
-  const [options, setOptions] = useState({
+  const options = {
     chart: {
       id: 'home-environment',
       type: 'Line'
@@ -25,7 +24,7 @@ export default function EnvironmentDiagram({ ...data }) {
     xaxis: {
       categories: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23']
     }
-  })
+  }
 
   useEffect(() => {
     setSelection({

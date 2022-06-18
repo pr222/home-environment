@@ -27,10 +27,12 @@ export default function HomeEnvironment() {
   const cleanup = (readings) => {
     const cleaned = []
 
+    // Loop for each place to fill to the diagram-array.
     for (let i = 0; i < 24; i++) {
       let found = false
       const cordinate = {}
 
+      // Loop all readings for handling matches
       for (const elem of readings) {
         const hour = elem.time.split('T')[1].split(':')[0]
 
@@ -71,16 +73,14 @@ export default function HomeEnvironment() {
         fetch(`api/weather/${formDate}`)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data)
           const weatherT = data.weather.temperature
-          console.log(weatherT)
           const wTemperature = cleanup(weatherT)
-          console.log(wTemperature)
           setWeatherTemperature(wTemperature)
 
           const weatherH = data.weather.humidity
           const wHumidity = cleanup(weatherH)
           setWeatherHumidity(wHumidity)
+
           setIsLoading(false)
         })
       })
@@ -101,7 +101,7 @@ export default function HomeEnvironment() {
 
      <p>{isLoading ? 'Loading...' : `Displaying data for: ${displayDate.calendar()}`}</p>
 
-      <EnvironmentDiagram temperature={temperature} humidity={humidity} weatherTemperature={weatherTemperature} weatherHumidity={weatherHumidity} /> 
+      <EnvironmentDiagram temperature={temperature} humidity={humidity} weatherTemperature={weatherTemperature} weatherHumidity={weatherHumidity} />
     </>
   )
 }

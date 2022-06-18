@@ -1,5 +1,14 @@
 import moment from "Moment"
 
+/**
+ * Gets weather temperature and humidity by using SMHI Open Data API.
+ * 
+ * API DOCS: http://opendata.smhi.se/apidocs/metobs/index.html
+ * API License:(Creative Commons 4.0 SE) https://www.smhi.se/data/oppna-data/information-om-oppna-data/villkor-for-anvandning-1.30622
+ * 
+ * @param {*} req - request object
+ * @param {*} res - resonse object
+ */
 export default async function handler(req, res) {
   const { date } = req.query
 
@@ -14,9 +23,8 @@ export default async function handler(req, res) {
     method: 'GET'
   })
   const humidityResponse = await humidityRequest.json()
-  console.log(humidityResponse)
   const humidity = filterData(humidityResponse.value, date)
-  console.log(humidity)
+
   const weather = {
     temperature: temperature,
     humidity: humidity
@@ -36,9 +44,9 @@ function filterData(data, day) {
   const results = []
 
   for (let record of data) {
-    if (moment(record.date).format().split('T')[0] === day) {
+    if (moment(record.date).subtract(2, 'hours').format().split('T')[0] === day) {
       const temp = {
-        time: moment(record.date).format(),
+        time: moment(record.date).subtract(2, 'hours').format(), // Subtract to remove the +2 timezone
         value: record.value
       }
 
