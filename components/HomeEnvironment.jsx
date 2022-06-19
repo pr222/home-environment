@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import moment from 'Moment'
+import moment from 'moment'
 import EnvironmentDiagram from './EnvironmentDiagram'
 
 /**

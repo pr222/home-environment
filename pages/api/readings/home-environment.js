@@ -1,4 +1,4 @@
-import moment from 'Moment'
+import moment from 'moment'
 
 // Temperature - Returns temperature in celcius (C)
 // Humidity - Returns relative humidity (rH) in percentage %
