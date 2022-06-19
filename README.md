@@ -32,3 +32,78 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+This repository is deployed using Vercel at [https://home-environment-lv2xivy73-pr222.vercel.app/](https://home-environment-lv2xivy73-pr222.vercel.app/).
+
+#
+## Using the API
+
+### Home Environment IoT Data
+
+Getting sensor readings: 
+```
+-GET https://{baseURL}/api/readings/home-environment?date={YYYY-MM-DD}
+```
+This will return as JSON with this schema:
+```
+{
+    "thing": "Home-Environment",
+    "properties": {
+      "temperature": [{
+        "time": "string",
+        "value": "number"
+      }], 
+      "humidity": [{
+        "time": "string",
+        "value": "number"
+      }]      
+    }
+}
+```
+
+### Weather Data
+The weather endpoint uses [SMHI's Open API](http://opendata.smhi.se/apidocs/metobs/index.html) to get data.
+
+Getting weather data:
+```
+-GET https://{baseURL}/api/weather/{YYYY-MM-DD}
+```
+This will return as JSON with this schema:
+```
+{
+  "weather": {
+    "temperature": [{
+      "time": "string",
+      "value": "string"
+    }], 
+    "humidity": [{
+      "time": "string",
+      "value": "string"
+    }]      
+  }
+}
+```
+
+## Setting up the enrivonment variables
+### For communicating with Arduino Cloud REST API
+How to create these variables is described more in detail [here](https://github.com/pr222/arduino).
+
+```CLIENT_ID``` and ```CLIENT_SECRET``` refers to the API key created in the Arduino Cloud Integrations page.
+
+```THING_PROPERTIES_URL``` refers to the URL to call to the REST API and looks like this:
+
+```
+https://api2.arduino.cc/iot/v2/things/{thing-id}/properties
+```
+
+In order to easily choose what property to query the link is followed by the property ID, which in this case are used in the environment variables ```TEMPERATURE_ID``` and ```HUMIDITY_ID```.
+
+### For communicating with SMHI's Open API
+You can check their [documentation](http://opendata.smhi.se/apidocs/metobs/index.html) for how to find and use different endpoints. 
+
+For this project the following variables were used:
+```
+WEATHER_API_LINK_TEMPERATURE="https://opendata-download-metobs.smhi.se/api/version/latest/parameter/1/station/96190/period/latest-months/data.json"
+
+WEATHER_API_LINK_HUMIDITY="https://opendata-download-metobs.smhi.se/api/version/latest/parameter/6/station/96190/period/latest-months/data.json"
+```
