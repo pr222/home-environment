@@ -62,7 +62,7 @@ export default function EnvironmentDiagram({ ...data }) {
       <ApexCharts
         options={options}
         series={selection.series}
-        width={screenWidth > 1000 ? 800 : 400}
+        width={screenWidth > 1200 ? 800 : 400}
         height={620}
       />    
     </>
