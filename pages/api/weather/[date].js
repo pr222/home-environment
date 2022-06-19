@@ -1,4 +1,4 @@
-import moment from "Moment"
+import moment from "moment"
 
 /**
  * Gets weather temperature and humidity by using SMHI Open Data API.
