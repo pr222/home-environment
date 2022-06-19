@@ -12,8 +12,6 @@ const ApexCharts = dynamic(() => import('react-apexcharts'), { ssr: false });
  * @returns this component.
  */
 export default function EnvironmentDiagram({ ...data }) {
-  const [screenWidth, setScreenWidth] = useState()
-
   const [selection, setSelection] = useState({})
   const options = {
     chart: {
@@ -27,13 +25,6 @@ export default function EnvironmentDiagram({ ...data }) {
       categories: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23']
     }
   }
-
-  // Works only when loading or re-loading page, not on resize.
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setScreenWidth(window.innerWidth)
-    }
-  }, [])
 
   useEffect(() => {
     setSelection({
@@ -62,7 +53,7 @@ export default function EnvironmentDiagram({ ...data }) {
       <ApexCharts
         options={options}
         series={selection.series}
-        width={screenWidth > 1200 ? 800 : 400}
+        width={800}
         height={620}
       />    
     </>
