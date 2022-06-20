@@ -61,6 +61,8 @@ This will return as JSON with this schema:
 }
 ```
 
+The API sends calls to the Arduino IoT Cloud REST API following its [documentation](https://www.arduino.cc/reference/en/iot/api/).
+
 ### Weather Data
 The weather endpoint uses [SMHI's Open API](http://opendata.smhi.se/apidocs/metobs/index.html) to get data.
 
@@ -86,7 +88,7 @@ This will return as JSON with this schema:
 
 ## Setting up the enrivonment variables
 ### For communicating with Arduino Cloud REST API
-How to create these variables is described more in detail [here](https://github.com/pr222/arduino).
+How to create these variables for this project is described more in detail in the repository for the [arduino code](https://github.com/pr222/arduino).
 
 ```CLIENT_ID``` and ```CLIENT_SECRET``` refers to the API key created in the Arduino Cloud Integrations page.
 
@@ -97,6 +99,8 @@ https://api2.arduino.cc/iot/v2/things/{thing-id}/properties
 ```
 
 In order to easily choose what property to query the link is followed by the property ID, which in this case are used in the environment variables ```TEMPERATURE_ID``` and ```HUMIDITY_ID```.
+
+More information of how to make calls to [Arduino's REST API](https://www.arduino.cc/reference/en/iot/api/).
 
 ### For communicating with SMHI's Open API
 You can check their [documentation](http://opendata.smhi.se/apidocs/metobs/index.html) for how to find and use different endpoints. 
