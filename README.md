@@ -33,10 +33,13 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
-This repository is deployed using Vercel at [https://home-environment-lv2xivy73-pr222.vercel.app/](https://home-environment-lv2xivy73-pr222.vercel.app/).
+<hr>
 
-#
-## Using the API
+>This repository is deployed using Vercel at [https://home-environment.vercel.app/](https://home-environment.vercel.app/).
+
+<hr>
+
+## Consuming the API endpoints
 
 ### Home Environment IoT Data
 
@@ -86,7 +89,7 @@ This will return as JSON with this schema:
 }
 ```
 
-## Setting up the enrivonment variables
+## Setting up the enrivonment variables for this project
 ### For communicating with Arduino Cloud REST API
 How to create these variables for this project is described more in detail in the repository for the [arduino code](https://github.com/pr222/arduino).
 
@@ -100,7 +103,7 @@ https://api2.arduino.cc/iot/v2/things/{thing-id}/properties
 
 In order to easily choose what property to query the link is followed by the property ID, which in this case are used in the environment variables ```TEMPERATURE_ID``` and ```HUMIDITY_ID```.
 
-More information of how to make calls to [Arduino's REST API](https://www.arduino.cc/reference/en/iot/api/).
+More information of how to make calls to the [Arduino's REST API](https://www.arduino.cc/reference/en/iot/api/).
 
 ### For communicating with SMHI's Open API
 You can check their [documentation](http://opendata.smhi.se/apidocs/metobs/index.html) for how to find and use different endpoints. 
