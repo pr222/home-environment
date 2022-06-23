@@ -29,21 +29,21 @@ export default function EnvironmentDiagram({ ...data }) {
   useEffect(() => {
     setSelection({
       series : [{
-        color: '#2dd37b',
-        name: 'Temperature',
-        data: data.temperature
+        color: '#CCCCCC',
+        name: 'Weather Humidity',
+        data:  data.weatherHumidity
       }, {
         color: '#1cb7cc',
         name: 'Humidity',
         data:  data.humidity
       }, {
+        color: '#2dd37b',
+        name: 'Temperature',
+        data: data.temperature
+      }, {
         color: '#000000',
         name: 'Weather Temperature',
         data:  data.weatherTemperature
-      }, {
-        color: '#CCCCCC',
-        name: 'Weather Humidity',
-        data:  data.weatherHumidity
       }
     ]})
   }, [data.temperature, data.humidity, data.weatherTemperature, data.weatherHumidity])
